@@ -1,20 +1,35 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <deque> 
 #include <algorithm>
 #include <string>
 using namespace std;
- 
-class jisuanqi{
+/*
+大体思路 
+定义一个结构体，里面有数字 一个 INT 存储ASCII码，计算时用以生成 数字  或者  算子。
+一个char 用以保存这个东西是 数字 还是 算子。 
+*/ 
+
+struct Suan{
+	int num;//ASCII码 
+	int flag;//
+}suan={0,0};
+class Calculate{
 	public:
-		double x;
-		double y;
+		double resltu;
 		char   c;
-		jisuanqi(string name){
-			cout<<"======录脝脣茫脝梅======\n"; 
-			cout<<name<<"\n\n";
+		Calculat(string name){
+			int len=name.size();
+			cout<<"==========Calculate==========\n"; 
+			cout<<"==========";
+			if(len>9)
+				for(int i=0;i<9;i++)cout<<name[i];
+			else 
+			cout<<name;
+			for(int i=0;i<19-len;i++)cout<<"=";
 		}
-		
+		deque<Suan> duiwu;
 		double doit(){
 			return Howdo(x,y,c);
 		}
@@ -40,16 +55,16 @@ class jisuanqi{
 			}
 		}
 };
-double jisuanqi::jia(double const &x,double const &y){
+double Calculate::jia(double const &x,double const &y){
 	return x+y;
 }
-double jisuanqi::jian(double const &x,double const &y){
+double Calculate::jian(double const &x,double const &y){
 	return x-y;
 }
-double jisuanqi::chen(double const &x,double const &y){
+double Calculate::chen(double const &x,double const &y){
 	return x*y;
 }
-double jisuanqi::chu(double const &x,double const &y){
+double Calculate::chu(double const &x,double const &y){
 	if(y == 0){
 		 return 9999999999999999999999.0;
 	}
@@ -57,16 +72,11 @@ double jisuanqi::chu(double const &x,double const &y){
 		 return x/y;
 }
 int main(){
-	jisuanqi b("gyh");
-	double x,y;
+	Calculate b("gyhisdtc.");
 	char   c;
-	cin>>x>>c>>y;
+	cin>>c;
 	while(c != 'q'){
-		b.x=x;
-		b.c=c;
-		b.y=y;
-		cout<<"result: "<<b.doit()<<"\n";
-		cin>>x>>c>>y;
+
 	}
 	return 0;
 }
