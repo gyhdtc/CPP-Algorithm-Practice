@@ -4,14 +4,14 @@
 #include <algorithm>
 #include <string>
 using namespace std;
-
+ 
 class jisuanqi{
 	public:
 		double x;
 		double y;
 		char   c;
 		jisuanqi(string name){
-			cout<<"======¼ÆËãÆ÷======\n"; 
+			cout<<"======Â¼Ã†Ã‹Ã£Ã†Ã·======\n"; 
 			cout<<name<<"\n\n";
 		}
 		
