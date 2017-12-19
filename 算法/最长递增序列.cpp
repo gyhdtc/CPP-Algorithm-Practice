@@ -1,5 +1,5 @@
 #include <iostream>
-#includi <vector>
+#include <vector>
 using namespace std;
 int main() {
     int x,len=0;
