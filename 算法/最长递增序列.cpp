@@ -3,20 +3,20 @@
 using namespace std;
 int main() {
     int x,len=0;
-    vector<int> a;
-    cin>>x;
-    While(x != -1){
-        a.append(x);
+    vector<int> a;
+	cin>>x;
+	while(x != -1){
+		a.push_back(x);
         len++;
-    }
-    int i=1;
+		cin>>x;
+	}
+	int i=1;
     int start=0;
-    int lent=1;
     while(i<len){
         if(a[i]<=a[i-1])start=i;
-        if(lent<i-start+1)lent=i-start+1;
+        if(len<i-start+1)len=i-start+1;
         i++;
     }
-    cout<<lent;
-    return 0;
+    cout<<len;
+	return 0;
 }
