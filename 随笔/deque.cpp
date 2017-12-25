@@ -10,11 +10,11 @@ public:
 	Solution(string name){
 		cout<<"Start project "<<name<<"!";
 	}
-	deque<char> get;
-	deque<char> help;
-	deque<char> copy;
-	int digit;
 	int result;
+	void inputchar(const string &s);
+
+private:
+
 };
 void outdeque(deque<int> out){
 	for (deque<int>::iterator it = out.begin(); it!=out.end(); ++it)
