@@ -33,11 +33,12 @@ class Solution{
 }; 
 int main(){
 	int problem;
-	cout<<"input your problem you want to solve!"<<endl;
+	cout<<"input your problem you want to solve:"<<endl;
 	cin>>problem;
     Solution a(problem);
     int i;
 	i=a.getsolution();
-    cout<<"=== "<<i<<" kinds of soltion to your problem "<<problem<<endl;
+    cout<<"====================================="<<endl;
+	cout<<i<<" kinds of soltions to your problem "<<problem<<endl;
 	return 0;
 }
