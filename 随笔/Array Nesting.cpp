@@ -5,9 +5,8 @@
 此题用 nums[i] >= 0 来判断是否遍历过，
 如果没有遍历过，则将下一个的序号 i 设置为 nums[i]
 */
-
+//==================QUESTIONS=======来源于 LeetCode 565=========================================
 /* 
-==================QUESTIONS=======来源于 LeetCode 565=========================================
 A zero-indexed array A of length N contains all integers from 0 to N-1.
 Find and return the longest length of set S, where S[i] = {A[i], A[A[i]], A[A[A[i]]], ... } subjected to the rule below.
 
