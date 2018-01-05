@@ -45,30 +45,43 @@ public:
     int arrayNesting(vector<int>& nums) {
         int ret = 0;
         int j;
+        vector<int> a;
+		vector<int> b; 
         for(int i = 0; i < nums.size(); i++){
             int longest = 0; 
             j = i;
+            a.clear();
             while(nums[j] >= 0){
                 int t = nums[j];
+                a.push_back(nums[j]);
                 nums[j] = -1;
                 j = t;
                 longest ++;
             }
-            ret = max(ret , longest);
+            if(ret < longest){
+            	ret = longest;
+            	b.clear();
+            	b=a;
+			}
         }
+        for(int k : b){
+        	cout<<k<<"   ";
+		}
+		cout<<endl;
         return ret;
     }
 };
 
 int main(){
-	int i;
+	int i,p;
 	vector<int> gyh;
 	cin>>i;
-	while(i == 200001 ){
+	while(i != 200001 ){
 		gyh.push_back(i);
 		cin>>i;
 	}
 	Solution a;
-	cout<<a.arrayNesting(gyh)<<endl;
+	p = a.arrayNesting(gyh);
+	cout<<p<<endl;
 	return 0;
 }
