@@ -8,7 +8,7 @@ void trace(int n[],int len){
 	int i = 1;
 	int j = 0;
 	int t = 0;
-	for(;i < len;i ++){
+	for(;i < len; i++){
 		j = i;
 		while( j >= 0 && n[j-1] > n[j]){
 			t = n[j-1];
@@ -20,7 +20,7 @@ void trace(int n[],int len){
 }
 
 void outarray(int n[],int len){
-	for(int i = 0; i < len; i ++)
+	for(int i = 0; i < len; i++)
 	cout<<n[i]<<" ";
 	cout<<endl;
 }
