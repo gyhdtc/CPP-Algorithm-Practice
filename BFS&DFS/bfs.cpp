@@ -133,24 +133,24 @@ void bfs(int x,int y){
 
 
 int main(){
-	cout<<"         _"<<endl;
-	cout<<"       {{+}}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"      {{   }}"<<endl;
-	cout<<"  *** {{   }} ***"<<endl;
-	cout<<" *****{{   }}*****"<<endl;
+	cout<<"         _         "<<endl;
+	cout<<"       {{+}}       "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"      {{   }}      "<<endl;
+	cout<<"  *** {{   }} ***  "<<endl;
+	cout<<" *****{{   }}***** "<<endl;
 	cout<<"**   **-----**   **"<<endl;
 	cout<<"**   **-----**   **"<<endl;
-	cout<<" *****-------*****"<<endl;
-	cout<<"  ***---------***"<<endl;
+	cout<<" *****-------***** "<<endl;
+	cout<<"  ***---------***  "<<endl;
 	init();
 	bfs(sx,sy);
 	print_out_list();
