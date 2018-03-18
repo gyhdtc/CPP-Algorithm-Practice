@@ -1,12 +1,9 @@
 #include <iostream>
-#include <vector>
-#include <list>
-#include <algorithm>
+#include <GYH_INIT.h>
+using namespace std;
 void shellsort(int x, int a[]);
 void charge(int &a,int &b);
 void outgyh(int a[]);
-
-using namespace std;
 
 void shellsort(int x, int a[]){
 	cout<<x<<":"<<endl;
@@ -31,6 +28,7 @@ void outgyh(int a[]){
 	cout<<endl;
 }
 int main(){
+	GYH_init();
 	int g[3] = {5,3,1};
 	int a[10] = {4,8,9,1,10,6,2,5,3,7};
 	for(int i = 0; i < 3; i ++){
