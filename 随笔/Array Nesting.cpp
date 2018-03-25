@@ -1,10 +1,3 @@
-/*
-这题可以算是 寻找根节点 方法的应用吧。
-在 普林斯顿大学算法公开课上学到了  
-用 nums[i] == i 来判断是否为根节点
-此题用 nums[i] >= 0 来判断是否遍历过，
-如果没有遍历过，则将下一个的序号 i 设置为 nums[i]
-*/
 //==================QUESTIONS=======来源于 LeetCode 565=========================================
 /* 
 A zero-indexed array A of length N contains all integers from 0 to N-1.
