@@ -1,6 +1,6 @@
 #include <iostream>
 //#include <cstdio>
-using namespace std;
+//using namespace std;
 int main(){
 	int a, b, sum;
 	char out[10];
