@@ -1,4 +1,5 @@
 #include <iostream>
+#include "stdio.h"
 using namespace std;
 int main() {
     float c[1001] = {0};
