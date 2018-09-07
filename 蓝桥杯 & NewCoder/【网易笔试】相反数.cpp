@@ -3,6 +3,7 @@ using namespace std;
 int main(){
 	int x,t;
 	int y=0;
+	cout<<"123";
 	cin>>x;
 	t=x;
 	while(x>0){
