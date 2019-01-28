@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 int r, y, g;
-
 void gengxin(int a[][2], int j, int t) {
     if (a[j][1] > t) a[j][1] -= t;
         
