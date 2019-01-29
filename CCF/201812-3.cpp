@@ -62,10 +62,16 @@ void chuli(int ds, int xs, string s, int a[][5], int k) {
             }
         }
         a[k][h] = sum;
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < 4; i++)
             if (a[k][i] != 0) a[k][4] += 8;
     }
 }
+typedef struct IP
+{
+    string s;
+    int a[5];
+    long int x;
+};
 
 int main()
 {
@@ -81,9 +87,9 @@ int main()
     // 得到 。 和 / 是否存在
     for (int i = 0; i < n; i++) {
         chuli(dianshu(s[i]), xieshu(s[i]), s[i], a, i);
-        for (int j = 0; j < 5; j++)
-            cout << a[i][j] << " ";
-        cout << endl;
+        // for (int j = 0; j < 5; j++)
+        //     cout << a[i][j] << " ";
+        // cout << endl;
     }
     return 0;
 }
