@@ -1,16 +1,6 @@
 #include <iostream>
 #include <string>
 using namespace std;
-/*
-长度为 8 16 24 32 时可以不用写：
-    1.2.3.0 = 1.2.3.0/32
-    1.2.3   = 1.2.3.0/24
-    1.2     = 1.2.0.0/16
-    1       = 1.0.0.0/8
-子网掩码位数规定了的一定要匹配到
-*/
-// 从下到大排列，IP地址第一，子网掩码第二
-// ip地址集能够串一起就可以合并
 typedef struct
 {
     string s;
@@ -38,7 +28,7 @@ int xieshu(string a) {
     return rout;
 }
 
-void chuli(IP ip) {
+void chuli(IP &ip) {
     int h = 0;
     int i = 0;
     int sum = 0;
@@ -76,10 +66,21 @@ void chuli(IP ip) {
     }
 }
 
-void get_10(IP ip) {
+void get_10(IP &ip) {
+    ip.x = 0;
     for (int i = 0; i < 4; i++) ip.x = ip.x * 256 + ip.a[i];
 }
 
+void swap(IP &ip1, IP &ip2) {
+    IP t;
+    t = ip1;
+    ip1 = ip2;
+    ip2 = t;
+}
+
+void std_out(IP ip) {
+    cout << ip.a[0] << "." << ip.a[1] << "." << ip.a[2] << "." << ip.a[3] << "/" << ip.a[4] << endl;
+}
 int main()
 {
     int n;
@@ -92,6 +93,12 @@ int main()
         chuli(ip[i]);
         get_10(ip[i]);
     }
-
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++) {
+            if (ip[i].x > ip[j].x) swap(ip[i], ip[j]);
+        }
+    for (int i = 0; i < n; i++) {
+        std_out(ip[i]);
+    }
     return 0;
 }
