@@ -11,6 +11,15 @@ using namespace std;
 */
 // 从下到大排列，IP地址第一，子网掩码第二
 // ip地址集能够串一起就可以合并
+typedef struct
+{
+    string s;
+    int a[5] = {0};
+    int ds;
+    int xs;
+    long int x;
+}IP;
+
 int dianshu(string a) {
     int len = a.length();
     int rout = 0;
@@ -19,6 +28,7 @@ int dianshu(string a) {
     }
     return rout;
 }
+
 int xieshu(string a) {
     int len = a.length();
     int rout = 0;
@@ -27,69 +37,61 @@ int xieshu(string a) {
     }
     return rout;
 }
-void chuli(int ds, int xs, string s, int a[][5], int k) {
-    // 对第k个进行字符串处理 写入到 a[k][4],获得了字符串s 他的点数，他的斜杠数
-    //cout << ds << xs << s << k << endl;
+
+void chuli(IP ip) {
     int h = 0;
     int i = 0;
     int sum = 0;
-    if (xs == 1) {
+    if (ip.xs == 1) {
         // 一定有斜杠
-        for (i = 0; s[i] != '/'; i++) {
-            if (s[i] != '.') sum = sum * 10 + s[i] - 48;
+        for (i = 0; ip.s[i] != '/'; i++) {
+            if (ip.s[i] != '.') sum = sum * 10 + ip.s[i] - 48;
             else {
-                a[k][h] = sum;
+                ip.a[h] = sum;
                 sum = 0;
                 h++;
             }
         }
-        a[k][h] = sum;
+        ip.a[h] = sum;
         i++;
         sum = 0;
-        for ( ; i < s.length(); i++) {
-            sum = sum * 10 + s[i] - 48;
+        for ( ; i < ip.s.length(); i++) {
+            sum = sum * 10 + ip.s[i] - 48;
         }
-        a[k][4] = sum;
+        ip.a[4] = sum;
     }
     else {
         // 没有斜杠
-        for (i = 0; i < s.length(); i++) {
-            if (s[i] != '.') sum = sum * 10 + s[i] - 48;
+        for (i = 0; i < ip.s.length(); i++) {
+            if (ip.s[i] != '.') sum = sum * 10 + ip.s[i] - 48;
             else {
-                a[k][h] = sum;
+                ip.a[h] = sum;
                 sum = 0;
                 h++;
             }
         }
-        a[k][h] = sum;
+        ip.a[h] = sum;
         for (i = 0; i < 4; i++)
-            if (a[k][i] != 0) a[k][4] += 8;
+            if (ip.a[i] != 0) ip.a[4] += 8;
     }
 }
-typedef struct IP
-{
-    string s;
-    int a[5];
-    long int x;
-};
+
+void get_10(IP ip) {
+    for (int i = 0; i < 4; i++) ip.x = ip.x * 256 + ip.a[i];
+}
 
 int main()
 {
     int n;
     cin >> n;
-    string s[n];
-    int a[n][5];
+    IP ip[n];
     for (int i = 0; i < n; i++) {
-        cin >> s[i];
-        for (int j = 0; j < 5; j++) a[i][j] = 0;
+        cin >> ip[i].s;
+        ip[i].ds = dianshu(ip[i].s);
+        ip[i].xs = xieshu (ip[i].s);
+        chuli(ip[i]);
+        get_10(ip[i]);
     }
-    // 要开始判断是否有省略之类的输入
-    // 得到 。 和 / 是否存在
-    for (int i = 0; i < n; i++) {
-        chuli(dianshu(s[i]), xieshu(s[i]), s[i], a, i);
-        // for (int j = 0; j < 5; j++)
-        //     cout << a[i][j] << " ";
-        // cout << endl;
-    }
+
     return 0;
 }
