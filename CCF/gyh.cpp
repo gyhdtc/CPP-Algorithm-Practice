@@ -1,16 +1,21 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-int main(){
-    int s = 0;
-    int t[10] = {0,1,1,1,1,1,1,1,1,0};
-    for (int i = 0; i < 10; i++) {
-        if (t[i] == 1) {
-            while(t[i] == 1 && i < 10) {
-                i++;
-            }
-            s++;
-        }
-    }
-    cout << s;
-    return 0;
+const int N=1005;
+int a[N];
+ 
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=1;i<=n;i++)
+	  scanf("%d",&a[i]);
+	for(int i=1;i<=n;i++){
+		int temp=3;
+		if(i==1||i==n)//开始的店铺和最后的店铺除以2 
+		  temp--;
+		int ans=(a[i-1]+a[i]+a[i+1])/temp;
+		printf("%d ",ans);
+	}
+	printf("\n");
+	return 0;
 }
