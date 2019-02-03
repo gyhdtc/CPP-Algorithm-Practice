@@ -17,7 +17,7 @@ int main(){
     // n 考场数 k 每个考场的人数 num 总考生数
     int n, k, num = 0;
     cin >> n;
-
+ 
     return 0;
 }
 
