@@ -1,10 +1,14 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
 using namespace std;
 const int N=1005;
 int a[N];
  
 int main()
 {
+	vector<int> nums;
+	nums.push_back(5);
+	cout << nums.size();
 	int n;
 	cin >> n;
 	for(int i=1;i<=n;i++)
