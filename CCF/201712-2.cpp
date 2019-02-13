@@ -11,9 +11,6 @@ int main(){
     int p = 0;
     
     while (num != 1) {
-        for (int i = 0; i < n; i++)
-            cout << a[i] << " ";
-        cout << endl;
         if (temp % k == 0) {
             temp++;
             a[p] = 1;
@@ -31,9 +28,6 @@ int main(){
             }
         }
     }
-    // for (int i = 0; i < n; i++)
-    //     cout << a[i] << " ";
-    // cout << endl;
     for (int i = 0; i < n; i++)
         if (a[i] == 0) {
             cout << i+1;
