@@ -1,17 +1,16 @@
 #include <iostream>
 using namespace std;
+int a[1000] = {0};
 int main(){
     int n, k;
     cin >> n >> k;
-
-    int a[n] = {0};
 
     int num = n;
     int temp = 1;
     int p = 0;
     
     while (num != 1) {
-        if (temp % k == 0) {
+        if (temp % k == 0 || (temp % 10) == k) {
             temp++;
             a[p] = 1;
             num--;
