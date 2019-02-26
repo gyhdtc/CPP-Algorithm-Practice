@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 int r, y, g;
-int a[200000][2];
+long long a[200000][2];
 void gengxin(int j, int t) {
     if (a[j][1] > t) a[j][1] -= t;
     else 
