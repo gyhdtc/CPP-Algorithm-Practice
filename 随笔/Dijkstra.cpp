@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
-
 const int MAXINT = 32767;
 
 struct Node
@@ -17,6 +17,7 @@ class Map
     int dist[100];// 走入 Ni 点的代价
     int prev[100];// 走入 Ni 点要经过的点
     int A[100][100];// n*n个点，最多10000个
+    int MAX_H;
 
     void print_A(){
         for (int i = 0; i < n*n; i++) {
@@ -35,13 +36,13 @@ class Map
     }
     void print_dist(){
         for (int i = 0; i < n*n; i++) {
-            printf("%5d ", dist[i]);
+            printf("%2d -> %2d\n", i, dist[i]);
         }
         cout << endl;
     }
     void print_prev(){
         for (int i = 0; i < n*n; i++) {
-            printf("%5d ", prev[i]);
+            printf("%2d -> %2d\n", i, prev[i]);
         }
         cout << endl;
     }
@@ -80,19 +81,22 @@ void Creat_A(Map &a) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n-1; j++) {
             a.A[i*n+j][i*n+j+1] = x_h[i][j];
+            a.A[i*n+j+1][i*n+j] = x_h[i][j];
         }
     }
     for (int i = 0; i < n-1; i++) {
         for (int j = 0; j < n; j++) {
             a.A[i*n+j][i*n+j+n] = x_s[i][j];
+            a.A[i*n+j+1][i*n+j] = x_h[i][j];
         }
     }
 }
 
 int main(){
     Map gyh;
-    int v0, n;
+    int v0, v1, n;
     cin >> gyh.n;
+    gyh.MAX_H = 2 * gyh.n;
     n = gyh.n;
 /*
     range : 0 → n*n-1
@@ -100,6 +104,7 @@ int main(){
     j = v0 % n;
 */
     cin >> v0;
+    cin >> v1;
     Creat_A(gyh);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -116,15 +121,18 @@ int main(){
     gyh.s[v0] = true;
     for(int i = 1; i < n*n; i++) {
         int mindist = MAXINT;
-        // 找出当前未使用的点j的dist[j]最小值
         int u = v0;
-        for(int j = 0; j < n*n; ++j)
-        if((!gyh.s[j]) && gyh.dist[j] < mindist) {
-            // u保存当前邻接点中距离最小的点的号码 
-            u = j;
-            mindist = gyh.dist[j];
+        // 找出当前未使用的点j的dist[j]最小值
+        for(int j = 0; j < n*n; j++) {
+            if((!gyh.s[j]) && gyh.dist[j] < MAXINT) {
+                // u保存当前邻接点中距离最小的点的号码 
+                u = j;
+                mindist = gyh.dist[j];
+            }
         }
+        
         gyh.s[u] = true;
+        
         for(int j = 0; j < n*n; j++)
         if((!gyh.s[j]) && gyh.A[u][j] < MAXINT)
         {
@@ -138,7 +146,23 @@ int main(){
             }
         }
     }
-    gyh.print_prev();
-    gyh.print_dist();
+    while(gyh.prev[v1] != v1) {
+        printf("%d <- ", v1);
+        v1 = gyh.prev[v1];
+    }
     return 0;
 }
+/*
+5
+0
+20
+1 1 1 1
+1 1 1 1
+10 10 10 10
+1 1 1 1
+1 1 1 1
+1 1 1 1 1
+10 10 1 10 10
+10 10 1 10 10
+1 1 1 1 1
+*/
