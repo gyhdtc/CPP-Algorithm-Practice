@@ -8,6 +8,7 @@ class Map
     public:
         int n;// n*n
         bool s[100];// 是否检测 Ni (i*n+j)点
+        bool lu[100];
         int dist[100];// 走入 Ni 点的代价
         int prev[100];// 走入 Ni 点要经过的点
         int A[100][100];// n*n个点，最多10个
@@ -21,18 +22,24 @@ class Map
             cout << endl;
         }
     }
-    void print_s(){
-        for (int i = 0; i < n*n; i++) {
-            if (s[i] == true) cout << "T ";
-            else cout << "F ";
-        }
-        cout << endl;
-    }
     void print_dist(){
-        for (int i = 0; i < n*n; i++) {
-            printf("%2d -> %2d\n", i, dist[i]);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int num = i*n+j;
+                if (j < n-1) 
+                    printf(" [%2d]  %2d ",num, A[num][num+1]);
+                else 
+                    printf(" [%2d]", num); 
+            }
+            cout << endl;
+            cout << endl;
+            for (int k = 0; i != n-1 && k < n; k++) {
+                int num = i*n+k;
+                printf("  %2d      ", A[num][num+n]);
+            }
+            cout << endl;
+            cout << endl;
         }
-        cout << endl;
     }
     void print_prev(){
         for (int i = 0; i < n*n; i++) {
@@ -114,10 +121,12 @@ int main(){
     gyh.MAX_H = 2 * n;
     
     Creat_A(gyh);
+    //gyh.print_dist();
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             int num = i*n+j;
             gyh.s[num] = false;
+            gyh.lu[num] = false;
             gyh.dist[num] = gyh.A[v0][i*gyh.n + j];
             if (gyh.dist[num] == MAXINT)
                 gyh.prev[num] = -1;
@@ -140,7 +149,6 @@ int main(){
         }
         gyh.s[u] = true;
         if (u == v1) break;
-        else cout << u << " ";
         for(int j = 0; j < n*n; j++)
         if((!gyh.s[j]) && gyh.A[u][j] < MAXINT)
         {
@@ -154,12 +162,31 @@ int main(){
             }
         }
     }
-    cout << endl;
+    cout << endl << gyh.dist[v1] << endl;
     while(gyh.prev[v1] != v1) {
-        printf("%d <- ", v1);
+        // printf("%d <- ", v1);
+        gyh.lu[v1] = true;
         v1 = gyh.prev[v1];
     }
-    printf("%d", v1);
+    // printf("%d", v1);
+    cout << "-------------------------------------" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int num = i*n+j;
+            if (gyh.s[num] == true) printf("%2d ", num);
+            else cout << "   ";
+        }
+        cout << endl;
+    }
+    cout << "-------------------------------------" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int num = i*n+j;
+            if (gyh.lu[num] == true) printf("%2d ", num);
+            else cout << "   ";
+        }
+        cout << endl;
+    }
     return 0;
 }
 /*
