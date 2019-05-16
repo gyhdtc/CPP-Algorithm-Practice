@@ -8,7 +8,7 @@ class Map
     public:
         int n;// n*n
         bool s[100];// 是否检测 Ni (i*n+j)点
-        bool lu[100];
+        bool lu[100];// 用来确定到达终点的路径
         int dist[100];// 走入 Ni 点的代价
         int prev[100];// 走入 Ni 点要经过的点
         int A[100][100];// n*n个点，最多10个
