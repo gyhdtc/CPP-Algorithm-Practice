@@ -121,7 +121,7 @@ int main(){
     gyh.MAX_H = 2 * n;
     
     Creat_A(gyh);
-    //gyh.print_dist();
+    
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             int num = i*n+j;
