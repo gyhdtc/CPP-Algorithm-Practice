@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-int makeargv (const char *s,  const char *delimiters, char ***argvp) ;
+int makeargv(const char *s,  const char *delimiters, char ***argvp);
 int main(int argc,  char *argv[]) {
     char delim[] =  "\t";
     int i;
