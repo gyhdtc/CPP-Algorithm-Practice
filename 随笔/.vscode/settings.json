@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "*.py": "python",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "errno.h": "c",
+        "crtdefs.h": "c"
     }
 }
