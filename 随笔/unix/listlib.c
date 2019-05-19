@@ -29,5 +29,76 @@ int accessdata(void)
             return -1;
         travptrs[0] = headptr;
         travptrs_size = TRAV_INIT_SIZE;
+        return 0;
     }
+    for (i = 0; i < travptrs_size; i++) {
+        if (travptrs[i] == NULL) {
+            travptrs[i] = headptr;
+            return i;
+        }
+    }
+    newptrs = realloc(travptrs, 2*travptrs_size*sizeof(list_t *));
+    if (newptrs == NULL)
+        return -1;
+    travptrs = newptrs;
+    travptrs[travptrs_size] = headptr;
+    travptrs_size *= 2;
+    return travptrs_size/2;
+}
+
+int adddata(data_t data) 
+{
+    list_t *newnode;
+    int nodesize;
+    
+    nodesize = sizeof(list_t) + strlen(data.string) + 1;
+    if ((newnode = (list_t *)(malloc(nodesize))) == NULL)
+        return -1;
+    newnode->item.time = data.time;
+    // 这是啥意思？？？
+    newnode->item.string = (char *)newnode + sizeof(list_t);
+
+    strcpy(newnode->item.string, data.string);
+    newnode->next = NULL;
+    if (headptr == NULL)
+        headptr = newnode;
+    else
+        tailptr->next = newnode;
+    tailptr = newnode;
+    return 0;
+}
+
+int getdata(int key, data_t *datap)
+{
+    list_t *t;
+    if ((key < 0) || (key >= travptrs_size) || (travptrs[key] == NULL)) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (travptrs[key] == &endlist) {
+        datap->string = NULL;
+        travptrs[key] = NULL;
+        return 0;
+    }
+    t = travptrs[key];
+    datap->string = (char *)malloc(strlen(t->item.string) + 1);
+    if (datap->string == NULL)
+        return -1;
+    datap->time = t->item.time;
+    strcpy(datap->string,t->item.string);
+    if (t->next == NULL)
+        travptrs[key] = &endlist;
+    else
+        travptrs[key] = t->next;
+    return 0;
+}
+
+int freekey(int key)
+{
+    if ((key < 0) || (key >= travptrs_size)) {
+        errno = EINVAL;
+        return -1;
+    }
+    travptrs[key] = NULL;
+    return 0;
 }
