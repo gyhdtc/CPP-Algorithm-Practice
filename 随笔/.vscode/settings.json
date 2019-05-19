@@ -3,6 +3,7 @@
         "*.py": "python",
         "iostream": "cpp",
         "errno.h": "c",
-        "crtdefs.h": "c"
+        "crtdefs.h": "c",
+        "stdlib.h": "c"
     }
 }
