@@ -4,10 +4,7 @@
 #include <queue>
 #include <map>
 using namespace std;
-
 int debug = 0;
-template <typename T> ostream& operator<< (ostream&, vector<T>& );
-template <typename T> ostream& operator<< (ostream&, queue<T>& );
 
 template<typename T>
 class myVector : public vector<T> {
@@ -22,7 +19,8 @@ class myVector : public vector<T> {
     T& operator[] (size_t n);
     const T& operator[] (size_t n)const;    
     
-    friend ostream& operator<<<T> (ostream& output, vector<T>& arr);
+    template<typename t>
+    friend ostream& operator<< (ostream& output, vector<t>& arr);
 };
 template<typename T>
 ostream& operator<< (ostream& output, vector<T>& arr) {
@@ -42,7 +40,8 @@ class myQueue : public queue<T> {
     public:
         myQueue() : queue<T>() {};
 
-        friend ostream& operator<<<T> (ostream& output, queue<T>& q);
+        template<typename t>
+        friend ostream& operator<< (ostream& output, queue<t>& q);
 };
 template <typename T>
 ostream& operator<< (ostream& output, queue<T>& q) {
@@ -105,13 +104,15 @@ myVector<int> Solution::maxSlidingWindow(myVector<int>& nums, int k) {
     queue<int> temp;
     for (int i = 0; i < nums.size(); i++) {
         if (!temp.empty() && temp.front() < nums[i]) {
-            while(!temp.empty()) temp.pop();
+            while (!temp.empty() && temp.front() < nums[i]) temp.pop();
         }
-        else if (temp.size() == k)
-            temp.pop();
+        // if (1) {
+        //     while (temp.size() >= k && temp.front() < nums[i]) temp.pop();
+        // }
         temp.push(nums[i]);
         if (i >= k-1)
             res.push_back(temp.front());
+        if (temp.size() == k) temp.pop();
     }
     return res;
 }
@@ -124,9 +125,9 @@ int main() {
     // cout << gyh1;
     
     // 单调队列 滑动窗口最大值
-    // myVector<int> gyh2 {1,-1};
+    // myVector<int> gyh2 {1,3,-1,8,5,7,6,4,3};
     // myVector<int> answer;
-    // int k = 1;
+    // int k = 3;
     // answer = mysolution.maxSlidingWindow(gyh2, k);
     // cout << answer;
 
@@ -139,5 +140,6 @@ int main() {
     // }
     // cout << q1;
     // cout << q2;
+
     return 0;
 }
