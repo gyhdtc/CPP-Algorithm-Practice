@@ -61,7 +61,8 @@ class Solution {
         }
         // 单调队列 （滑动窗口最大值）
         myVector<int> maxSlidingWindow(myVector<int>&, int);
-        
+        // 快排
+        void quickSort(myVector<int>&);
     private:
         void realMergeSort(myVector<int>&, int, int);
         void merge_Sort(myVector<int>&, int, int, int);
@@ -116,7 +117,9 @@ myVector<int> Solution::maxSlidingWindow(myVector<int>& nums, int k) {
     }
     return res;
 }
+void quickSort(myVector<int>& a) {
 
+}
 int main() {
     Solution mysolution;
     // 归并排序
@@ -141,5 +144,6 @@ int main() {
     // cout << q1;
     // cout << q2;
 
+    
     return 0;
 }
