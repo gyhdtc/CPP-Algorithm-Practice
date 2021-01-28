@@ -66,6 +66,7 @@ class Solution {
     private:
         void realMergeSort(myVector<int>&, int, int);
         void merge_Sort(myVector<int>&, int, int, int);
+        void realQuickSort(myVector<int>&, int, int);
 };
 void Solution::realMergeSort(myVector<int>& a, int l, int r) {
     if (l >= r)
@@ -117,9 +118,29 @@ myVector<int> Solution::maxSlidingWindow(myVector<int>& nums, int k) {
     }
     return res;
 }
-void quickSort(myVector<int>& a) {
-
+void Solution::quickSort(myVector<int>& a) {
+    realQuickSort(a, 0, a.size()-1);
 }
+void Solution::realQuickSort(myVector<int>& a, int lo, int hi) {
+    int i = lo, j = hi;
+    int temp;
+    if (i < j) {
+        temp = a[i];
+        while (i < j) {
+            while (j > i && a[j] >= temp) j--;
+            a[i] = a[j];
+            if (debug) cout << "temp = " << temp << " - " << a;
+            while (i < j && a[i] <= temp) i++;
+            a[j] = a[i];
+            if (debug) cout << "temp = " << temp << " - " << a;
+        }
+        a[i] = temp;
+        if (debug) cout << "i = " << i << " - " << a;
+        realQuickSort(a, lo, i-1);
+        realQuickSort(a, i+1, hi);
+    }
+}
+
 int main() {
     Solution mysolution;
     // 归并排序
@@ -144,6 +165,13 @@ int main() {
     // cout << q1;
     // cout << q2;
 
-    
+    // 快排
+    // 标准选 lo，从 hi 开始；反之亦然。
+    // 直接用 等于号= 赋值就行；因为早晚会交换过来；
+    // 最后还要 将标准值 赋值给 a[i]
+    // myVector<int> gyh1 {7,5,6,4,8,2,3,1};
+    // cout << gyh1;
+    // mysolution.quickSort(gyh1);
+    // cout << gyh1;
     return 0;
 }
