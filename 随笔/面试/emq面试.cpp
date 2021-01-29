@@ -52,7 +52,7 @@ int Solution::realBinarysearch(myVector<int>& a, int start, int end, int t) {
 // ---
 // main
 int main() {
-    myVector<int> v {1,3,5,7,6,9,10,14};
+    myVector<int> v {1,3,5,6,7,9,10,14};
     Solution s;
     int target;
     int res;
