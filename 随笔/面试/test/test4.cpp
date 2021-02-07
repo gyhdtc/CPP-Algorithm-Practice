@@ -41,6 +41,7 @@ public:
 		check(0, "back on empty StrBlob");
 		return data->back();
 	}
+    strBlob* fun() { return this; }
 private:
     std::shared_ptr<vector<string>> data;
     void check(size_type i, const string &msg) const {
@@ -49,6 +50,6 @@ private:
     }
 };
 int main() {
-
+    strBlob a;
     return 0;
 }
