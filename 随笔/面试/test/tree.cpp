@@ -19,7 +19,7 @@ public:
     void PostOrder() { PostOrder(root); }  //后序遍历
 
     BiNode<DataType>* BiFind(DataType target) { return BiFind(root, target); }
-    BiNode<DataType>* BiInsert(DataType x) { return BiInsert(root, x); }
+    bool BiInsert(DataType x) { return BiInsert(root, x); }
     bool BiDelete(DataType x) { return BiDelete(root, x); }
 private:
     BiNode<DataType>* root;
@@ -32,7 +32,7 @@ private:
     void PostOrder(BiNode<DataType> *bt);
 
     BiNode<DataType>* BiFind(BiNode<DataType> *, DataType);
-    BiNode<DataType>* BiInsert(BiNode<DataType> *, DataType);
+    bool BiInsert(BiNode<DataType> *, DataType);
     bool BiDelete(BiNode<DataType> *, DataType);
 };
 /*
@@ -132,23 +132,25 @@ BiNode<DataType>* BiTree<DataType>::BiFind(BiNode<DataType> *bt,DataType target)
 ** 二叉树插入
 */
 template <class DataType>
-BiNode<DataType>* BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
+bool BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
 {
     if (bt == NULL)
     {
         bt = new BiNode<DataType>;
         bt->data = x;
-        return bt;
+        return true;
     }
-    cout << "[" << bt->data;
     if (x < bt->data)
     {
         if (bt->lchild == NULL)
         {
-            bt->lchild = new BiNode<DataType>;
-            bt->lchild->data = x;
-            bt->lchild->parent = bt;
-            return bt->lchild;
+            BiNode<DataType>* temp = new BiNode<DataType>;
+            temp->data = x;
+            temp->lchild = NULL;
+            temp->rchild = NULL;
+            temp->parent = bt;
+            bt->lchild = temp;
+            return true;
         }
         else
         {
@@ -159,11 +161,13 @@ BiNode<DataType>* BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
     {
         if (bt->rchild == NULL)
         {
-            cout << "]" << x;
-            bt->rchild = new BiNode<DataType>;
-            bt->rchild->data = x;
-            bt->rchild->parent = bt;
-            return bt->rchild;
+            BiNode<DataType>* temp = new BiNode<DataType>;
+            temp->data = x;
+            temp->lchild = NULL;
+            temp->rchild = NULL;
+            temp->parent = bt;
+            bt->rchild = temp;
+            return true;
         }
         else
         {
@@ -172,7 +176,7 @@ BiNode<DataType>* BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
     }
     else
     {
-        return NULL;
+        return false;
     }
 }
 /*
@@ -202,11 +206,19 @@ bool BiTree<DataType>::BiDelete(BiNode<DataType> *bt, DataType x)
         }
         else if (bt->lchild == NULL && bt->rchild != NULL)
         {
-
+            if (bt == bt->parent->lchild)
+                bt->parent->lchild = bt->rchild;
+            if (bt == bt->parent->rchild)
+                bt->parent->rchild = bt->rchild;
+            delete bt;
         }
         else if (bt->lchild != NULL && bt->rchild == NULL)
         {
-
+            if (bt == bt->parent->lchild)
+                bt->parent->lchild = bt->lchild;
+            if (bt == bt->parent->rchild)
+                bt->parent->rchild = bt->lchild;
+            delete bt;
         }
         else
         {
@@ -232,17 +244,24 @@ int main() {
         cout << "Find NO" << endl;
     }
 // test insert
-    shit = gyh.BiInsert(11);
-    if (shit != NULL)
+    if (gyh.BiInsert(11))
     {
-        cout << "Insert OK " << shit->parent->data << endl;
+        cout << "Insert OK " << endl;
     }
     else
     {
         cout << "Insert NO" << endl;
     }
 // test delete
-    if (gyh.BiDelete(3))
+    if (gyh.BiDelete(9))
+    {
+        cout << "Delete OK" << endl;
+    }
+    else
+    {
+        cout << "Delete NO" << endl;
+    }
+    if (gyh.BiDelete(10))
     {
         cout << "Delete OK" << endl;
     }
