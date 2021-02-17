@@ -12,6 +12,13 @@ struct BNode
 };
 
 template <class T>
+struct C
+{
+    T data;
+    BNode<T>* lchild, *rchild, *parent;
+};
+
+template <class T>
 class BTree
 {
 public:
@@ -39,7 +46,7 @@ private:
     void _PostOrder(BNode<T>* bt);
 
     BNode<T>* _BFind(BNode<T>*, T);
-    bool _BInsert(BNode<T>* &, T);
+    bool _BInsert(BNode<T>* & , T);
     bool _BDelete(BNode<T>*, T);
     T _getmin(BNode<T>*);
 };
@@ -131,10 +138,10 @@ BNode<T>* BTree<T>::_BFind(BNode<T>* bt, T target)
     {
         return _BFind(bt->rchild, target);
     }
-    else
-    {
+    // else
+    // {
         return bt;
-    }
+    // }
 }
 /*
 ** 二叉树插入
@@ -264,21 +271,17 @@ T BTree<T>::_getmin(BNode<T>* bt)
 int main() {
     BTree<int> gyh;
     gyh.BInsert({10,8,5,3,9,15,11,20}) ? cout << "ok" << endl : cout << "no" << endl;
-
-    BNode<int>* shit = gyh.BFind(8); // 这样不能运行，只能运行到 265 行，甚至连插入都运行不成。
-    gyh.BFind(8);                    // 这样可以运行
-                                     // 去掉这一行也可以运行
-    // gyh.BFind(8);
-    // shit != NULL ? cout << "Find OK " << shit->parent->data << endl : cout << "Find NO" << endl;
+    // 这里有问题，加上之后整个程序运行不起来
+    C<int> a;
+    a.data = 1;
+    C<int>* b = NULL;
+    b = &a;
+    // 
+    // BNode<int>* shit = gyh.BFind(8); // 这样不能运行，只能运行到 265 行，甚至连插入都运行不成。
+    // shit != NULL ? 
+    // cout << "Find OK " << shit->parent->data << endl : cout << "Find NO" << endl;
 // test delete
-    if (gyh.BDelete(10))
-    {
-        cout << "Delete OK" << endl;
-    }
-    else
-    {
-        cout << "Delete NO" << endl;
-    }
+    gyh.BDelete(10) ? cout << "Delete OK" << endl : cout << "Delete NO" << endl;
 
     gyh.PreOrder();
     cout << endl;
