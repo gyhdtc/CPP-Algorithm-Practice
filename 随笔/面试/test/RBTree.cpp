@@ -3,14 +3,17 @@
 #include <iostream>
 using namespace std;
 
+enum Color { red, black };
+
 template <class T>
 struct BNode
 {
     BNode() = default;
-    BNode(T x) : data(x), lchild(NULL), rchild(NULL), parent(NULL) {}
-    BNode(T x, BNode<T>* root) : data(x), lchild(NULL), rchild(NULL), parent(root) {}
+    BNode(T x) : data(x), lchild(NULL), rchild(NULL), parent(NULL), color(red) {}
+    BNode(T x, BNode<T>* root) : data(x), lchild(NULL), rchild(NULL), parent(root), color(red) {}
     T data;
     BNode<T>* lchild, *rchild, *parent;
+    Color color;
 };
 
 template <class T>
@@ -314,7 +317,7 @@ int main() {
     gyh.BFind(10) ? cout << "Find OK" << endl : cout << "Find NO" << endl;
 // test delete
     gyh.BDelete(10) ? cout << "Delete OK" << endl : cout << "Delete NO" << endl;
-
+    
     output<int>(gyh);
     return 0;
 }
