@@ -1,127 +1,135 @@
 #include <iostream>
 using namespace std;
 
-template <class DataType>
-struct BiNode
+template <class T>
+struct BNode
 {
-    DataType data;
-    BiNode<DataType>* lchild, *rchild, *parent;
+    BNode() = default;
+    BNode(T x) : data(x), lchild(NULL), rchild(NULL), parent(NULL) {}
+    BNode(T x, BNode<T>* root) : data(x), lchild(NULL), rchild(NULL), parent(root) {}
+    T data;
+    BNode<T>* lchild, *rchild, *parent;
 };
-template <class DataType>
-class BiTree
+
+template <class T>
+class BTree
 {
 public:
-    BiTree() { root = Create(root, NULL); }
-    ~BiTree() { Release(root); }
+    BTree() = default;
+    ~BTree() { _Release(_root); }
 
-    void PreOrder() { PreOrder(root); }    //前序遍历
-    void InOrder() { InOrder(root); }      //中序遍历
-    void PostOrder() { PostOrder(root); }  //后序遍历
+    void Create() { _root = _Create(_root, NULL); }
+    void PreOrder() { _PreOrder(_root); }    //前序遍历
+    void InOrder() { _InOrder(_root); }      //中序遍历
+    void PostOrder() { _PostOrder(_root); }  //后序遍历
 
-    BiNode<DataType>* BiFind(DataType target) { return BiFind(root, target); }
-    bool BiInsert(DataType x) { return BiInsert(root, x); }
-    bool BiDelete(DataType x) { return BiDelete(root, x); }
+    BNode<T>* BFind(T target) { return _BFind(_root, target); }
+    bool BInsert(T x) { return _BInsert(_root, x); }
+    bool BInsert(initializer_list<T> il);
+    bool BDelete(T x) { return _BDelete(_root, x); }
+    T getmin(BNode<T>* bt) { return _getmin(bt); }
+
 private:
-    BiNode<DataType>* root;
+    BNode<T>* _root;
+    BNode<T>* _Create(BNode<T>* bt, BNode<T>* parent);
 
-    BiNode<DataType>* Create(BiNode<DataType> *bt, BiNode<DataType> *parent);
+    void _Release(BNode<T>* bt);
+    void _PreOrder(BNode<T>* bt);
+    void _InOrder(BNode<T>* bt);
+    void _PostOrder(BNode<T>* bt);
 
-    void Release(BiNode<DataType> *bt);
-    void PreOrder(BiNode<DataType> *bt);
-    void InOrder(BiNode<DataType> *bt);
-    void PostOrder(BiNode<DataType> *bt);
-
-    BiNode<DataType>* BiFind(BiNode<DataType> *, DataType);
-    bool BiInsert(BiNode<DataType> *, DataType);
-    bool BiDelete(BiNode<DataType> *, DataType);
+    BNode<T>* _BFind(BNode<T>*, T);
+    bool _BInsert(BNode<T>* &, T);
+    bool _BDelete(BNode<T>*, T);
+    T _getmin(BNode<T>*);
 };
 /*
 ** 创建 二叉树
 ** 通过输入创建
 ** 输入顺序为前序遍历
 */
-template <class DataType>
-BiNode<DataType>* BiTree<DataType>::Create(BiNode<DataType> *bt, BiNode<DataType> *parent)
+template <class T>
+BNode<T>* BTree<T>::_Create(BNode<T>* bt, BNode<T>* parent)
 {
-    DataType ch;
+    T ch;
     cin >> ch;
     if (ch == 0) bt = NULL;
     else
     {
-        bt = new BiNode<DataType>;
+        bt = new BNode<T>;
         bt->data = ch;
         bt->parent = parent;
-        bt->lchild = Create(bt->lchild, bt);
-        bt->rchild = Create(bt->rchild, bt);
+        bt->lchild = _Create(bt->lchild, bt);
+        bt->rchild = _Create(bt->rchild, bt);
     }
     return bt;
 }
 /*
 ** 析构 二叉树
 */
-template <class DataType>
-void BiTree<DataType>::Release(BiNode<DataType> *bt)
+template <class T>
+void BTree<T>::_Release(BNode<T>* bt)
 {
     if(bt != NULL){
-        Release(bt->lchild);
-        Release(bt->rchild);
+        _Release(bt->lchild);
+        _Release(bt->rchild);
         delete bt;
     }
 }
 /*
 ** 前序遍历
 */
-template <class DataType>
-void BiTree<DataType>::PreOrder(BiNode<DataType> *bt)
+template <class T>
+void BTree<T>::_PreOrder(BNode<T>* bt)
 {
     if (bt == NULL) return;
     else
     {
         cout << bt->data << " ";
-        PreOrder(bt->lchild);
-        PreOrder(bt->rchild);
+        _PreOrder(bt->lchild);
+        _PreOrder(bt->rchild);
     }
 }
 /*
 ** 中序遍历
 */
-template <class DataType>
-void BiTree<DataType>::InOrder(BiNode<DataType> *bt)
+template <class T>
+void BTree<T>::_InOrder(BNode<T>* bt)
 {
     if(bt == NULL) return;
     else{
-        InOrder(bt->lchild);
+        _InOrder(bt->lchild);
         cout << bt->data <<" ";
-        InOrder(bt->rchild);
+        _InOrder(bt->rchild);
     }
 }
 /*
 ** 后序遍历
 */
-template <class DataType>
-void BiTree<DataType>::PostOrder(BiNode<DataType> *bt)
+template <class T>
+void BTree<T>::_PostOrder(BNode<T>* bt)
 {
     if(bt == NULL) return;
     else{
-        PostOrder(bt->lchild);
-        PostOrder(bt->rchild);
+        _PostOrder(bt->lchild);
+        _PostOrder(bt->rchild);
         cout << bt->data << " ";
     }
 }
 /*
 ** 二叉树查找
 */
-template <class DataType>
-BiNode<DataType>* BiTree<DataType>::BiFind(BiNode<DataType> *bt,DataType target)
+template <class T>
+BNode<T>* BTree<T>::_BFind(BNode<T>* bt, T target)
 {
     if (bt == NULL) return NULL;
     if (target < bt->data)
     {
-        return BiFind(bt->lchild, target);
+        return _BFind(bt->lchild, target);
     }
     else if (target > bt->data)
     {
-        return BiFind(bt->rchild, target);
+        return _BFind(bt->rchild, target);
     }
     else
     {
@@ -131,47 +139,36 @@ BiNode<DataType>* BiTree<DataType>::BiFind(BiNode<DataType> *bt,DataType target)
 /*
 ** 二叉树插入
 */
-template <class DataType>
-bool BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
+template <class T>
+bool BTree<T>::_BInsert(BNode<T>* &bt, T x)
 {
     if (bt == NULL)
     {
-        bt = new BiNode<DataType>;
-        bt->data = x;
+        bt = new BNode<T>(x, bt);
         return true;
     }
     if (x < bt->data)
     {
         if (bt->lchild == NULL)
         {
-            BiNode<DataType>* temp = new BiNode<DataType>;
-            temp->data = x;
-            temp->lchild = NULL;
-            temp->rchild = NULL;
-            temp->parent = bt;
-            bt->lchild = temp;
+            bt->lchild = new BNode<T>(x, bt);
             return true;
         }
         else
         {
-            return BiInsert(bt->lchild, x);
+            return _BInsert(bt->lchild, x);
         }
     }
     else if (x > bt->data)
     {
         if (bt->rchild == NULL)
         {
-            BiNode<DataType>* temp = new BiNode<DataType>;
-            temp->data = x;
-            temp->lchild = NULL;
-            temp->rchild = NULL;
-            temp->parent = bt;
-            bt->rchild = temp;
+            bt->rchild = new BNode<T>(x, bt);
             return true;
         }
         else
         {
-            return BiInsert(bt->rchild, x);
+            return _BInsert(bt->rchild, x);
         }
     }
     else
@@ -180,19 +177,34 @@ bool BiTree<DataType>::BiInsert(BiNode<DataType> *bt, DataType x)
     }
 }
 /*
+** 二叉树插入 {数组}
+*/
+template <class T>
+bool BTree<T>::BInsert(initializer_list<T> il)
+{
+    for (auto i : il)
+    {
+        if (!_BInsert(_root, i))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+/*
 ** 二叉树删除
 */
-template <class DataType>
-bool BiTree<DataType>::BiDelete(BiNode<DataType> *bt, DataType x)
+template <class T>
+bool BTree<T>::_BDelete(BNode<T>* bt, T x)
 {
     if (bt == NULL) return false;
     if (x < bt->data)
     {
-        return BiDelete(bt->lchild, x);
+        return _BDelete(bt->lchild, x);
     }
     else if (x > bt->data)
     {
-        return BiDelete(bt->rchild, x);
+        return _BDelete(bt->rchild, x);
     }
     else
     {
@@ -222,70 +234,65 @@ bool BiTree<DataType>::BiDelete(BiNode<DataType> *bt, DataType x)
         }
         else
         {
-
+            T min_in_rchild = _getmin(bt->rchild);
+            bt->data = min_in_rchild;
+            _BDelete(bt->rchild, min_in_rchild);
         }
         return true;
     }
 }
+/*
+** 查找root下最小值
+*/
+template <class T>
+T BTree<T>::_getmin(BNode<T>* bt)
+{
+    if (bt == NULL)
+    {
+        return T(NULL);
+    }
+    if (bt->lchild == NULL)
+    {
+        return bt->data;
+    }
+    else
+    {
+        return _getmin(bt->lchild);
+    }
+}
 
 int main() {
-    BiTree<int> gyh;
+    BTree<int> gyh;
+    gyh.BInsert({10,8,5,3,9,15,11,20}) ? cout << "ok" << endl : cout << "no" << endl;
+
+    BNode<int>* shit = gyh.BFind(8); // 这样不能运行，只能运行到 265 行，甚至连插入都运行不成。
+    gyh.BFind(8);                    // 这样可以运行
+                                     // 去掉这一行也可以运行
+    // gyh.BFind(8);
+    // shit != NULL ? cout << "Find OK " << shit->parent->data << endl : cout << "Find NO" << endl;
+// test delete
+    if (gyh.BDelete(10))
+    {
+        cout << "Delete OK" << endl;
+    }
+    else
+    {
+        cout << "Delete NO" << endl;
+    }
+
+    gyh.PreOrder();
+    cout << endl;
     gyh.InOrder();
     cout << endl;
-    BiNode<int>* shit;
-// test find
-    shit = gyh.BiFind(8);
-    if (shit != NULL)
-    {
-        cout << "Find OK " << shit->parent->data << endl;
-    }
-    else
-    {
-        cout << "Find NO" << endl;
-    }
-// test insert
-    if (gyh.BiInsert(11))
-    {
-        cout << "Insert OK " << endl;
-    }
-    else
-    {
-        cout << "Insert NO" << endl;
-    }
-// test delete
-    if (gyh.BiDelete(9))
-    {
-        cout << "Delete OK" << endl;
-    }
-    else
-    {
-        cout << "Delete NO" << endl;
-    }
-    if (gyh.BiDelete(10))
-    {
-        cout << "Delete OK" << endl;
-    }
-    else
-    {
-        cout << "Delete NO" << endl;
-    }
-    gyh.InOrder();
+    gyh.PostOrder();
     return 0;
 }
 /*
-20
-8
-5
-3
-0
-0
-7
-0
-0
-10
-9
-0
-0
-0
-0
+          10
+        /    \
+       8     15 
+     /  \   /  \
+    5   9  11   20
+  /
+3    
 */
