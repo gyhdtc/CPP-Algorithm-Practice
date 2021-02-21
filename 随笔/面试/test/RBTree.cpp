@@ -8,11 +8,13 @@ enum Color { red, black };
 template <class T>
 struct BNode
 {
-    BNode() = default;
-    BNode(T x) : data(x), lchild(NULL), rchild(NULL), parent(NULL), color(red) {}
-    BNode(T x, BNode<T>* root) : data(x), lchild(NULL), rchild(NULL), parent(root), color(red) {}
+    // BNode() = default;
+    // BNode(T x, Color c) : data(x), color(c) {}
+    // BNode(T x, Color c, BNode<T>* root) : data(x), parent(root), color(c) {}
     T data;
-    BNode<T>* lchild, *rchild, *parent;
+    BNode<T>* lchild = NULL;
+    BNode<T>* rchild = NULL;
+    BNode<T>* parent = NULL;
     Color color;
 };
 
@@ -23,7 +25,7 @@ public:
     BTree() = default;
     ~BTree() { _Release(_root); }
 
-    void Create() { _root = _Create(_root, NULL); }
+    // void Create() { _root = _Create(_root, NULL); }
     void PreOrder() { _PreOrder(_root); }    //前序遍历
     void InOrder() { _InOrder(_root); }      //中序遍历
     void PostOrder() { _PostOrder(_root); }  //后序遍历
@@ -36,8 +38,8 @@ public:
     T getmin(BNode<T>* bt) { return _getmin(bt); }
 
 private:
-    BNode<T>* _root;
-    BNode<T>* _Create(BNode<T>*, BNode<T>*);
+    BNode<T>* _root = NULL;
+    // BNode<T>* _Create(BNode<T>*, BNode<T>*);
 
     void _Release(BNode<T>*);
     void _PreOrder(BNode<T>*);
@@ -46,33 +48,48 @@ private:
     void _LevelOrder(BNode<T>*);
 
     bool _BFind(BNode<T>*, T);
+
+    /* 待修改 */
     bool _BInsert(BNode<T>* & , T);
+    /* 待修改 */
+
     bool _BDelete(BNode<T>*, T);
     T _getmin(BNode<T>*);
+
+    /* 待补充 */
+    void _Handler(BNode<T>*);
+    void _LeftTurn(BNode<T>*);
+    void _RightTurn(BNode<T>*);
+    /* 待补充 */
+
+    BNode<T>* _Auncle(BNode<T>*);
+    BNode<T>* _Grandp(BNode<T>*);
+    Color _AuncleColor(BNode<T>*);
+    Color _GrandpColor(BNode<T>*);
 };
 /*
-** 创建 二叉树
+** 创建 红黑树
 ** 通过输入创建
 ** 输入顺序为前序遍历
 */
-template <class T>
-BNode<T>* BTree<T>::_Create(BNode<T>* bt, BNode<T>* parent)
-{
-    T ch;
-    cin >> ch;
-    if (ch == 0) bt = NULL;
-    else
-    {
-        bt = new BNode<T>;
-        bt->data = ch;
-        bt->parent = parent;
-        bt->lchild = _Create(bt->lchild, bt);
-        bt->rchild = _Create(bt->rchild, bt);
-    }
-    return bt;
-}
+// template <class T>
+// BNode<T>* BTree<T>::_Create(BNode<T>* bt, BNode<T>* parent)
+// {
+//     T ch;
+//     cin >> ch;
+//     if (ch == 0) bt = NULL;
+//     else
+//     {
+//         bt = new BNode<T>;
+//         bt->data = ch;
+//         bt->parent = parent;
+//         bt->lchild = _Create(bt->lchild, bt);
+//         bt->rchild = _Create(bt->rchild, bt);
+//     }
+//     return bt;
+// }
 /*
-** 析构 二叉树
+** 析构 红黑树
 */
 template <class T>
 void BTree<T>::_Release(BNode<T>* bt)
@@ -92,7 +109,7 @@ void BTree<T>::_PreOrder(BNode<T>* bt)
     if (bt == NULL) return;
     else
     {
-        cout << bt->data << " ";
+        cout << bt->data << (bt->color == red ? "[R]" : "[B]") << " ";
         _PreOrder(bt->lchild);
         _PreOrder(bt->rchild);
     }
@@ -106,7 +123,7 @@ void BTree<T>::_InOrder(BNode<T>* bt)
     if(bt == NULL) return;
     else{
         _InOrder(bt->lchild);
-        cout << bt->data <<" ";
+        cout << bt->data << (bt->color == red ? "[R]" : "[B]") <<" ";
         _InOrder(bt->rchild);
     }
 }
@@ -120,7 +137,7 @@ void BTree<T>::_PostOrder(BNode<T>* bt)
     else{
         _PostOrder(bt->lchild);
         _PostOrder(bt->rchild);
-        cout << bt->data << " ";
+        cout << bt->data << (bt->color == red ? "[R]" : "[B]") << " ";
     }
 }
 /*
@@ -142,7 +159,7 @@ void BTree<T>::_LevelOrder(BNode<T>* root)
         while(!que.empty())
         {
             temp = que.front();
-            cout << temp->data << " ";
+            cout << temp->data << (temp->color == red ? "[r]" : "[b]") << " ";
             que.pop();
             if(temp->lchild)
                 que_next.push(temp->lchild);
@@ -154,7 +171,7 @@ void BTree<T>::_LevelOrder(BNode<T>* root)
     }
 }
 /*
-** 二叉树查找
+** 红黑树查找
 */
 template <class T>
 bool BTree<T>::_BFind(BNode<T>* bt, T target)
@@ -174,21 +191,31 @@ bool BTree<T>::_BFind(BNode<T>* bt, T target)
     }
 }
 /*
-** 二叉树插入
+** 红黑树插入
 */
 template <class T>
 bool BTree<T>::_BInsert(BNode<T>* &bt, T x)
 {
     if (bt == NULL)
     {
-        bt = new BNode<T>(x, bt);
+        bt = new BNode<T>;
+        bt->data = x;
+        bt->color = red;
+        bt->parent = bt;
+        _Handler(bt);
         return true;
     }
     if (x < bt->data)
     {
         if (bt->lchild == NULL)
         {
-            bt->lchild = new BNode<T>(x, bt);
+            // cout << 1;
+            bt->lchild = new BNode<T>;
+            bt->lchild->data = x;
+            bt->lchild->color = red;
+            bt->lchild->parent = bt;
+            /* 处理函数 */
+            _Handler(bt->lchild);
             return true;
         }
         else
@@ -200,7 +227,12 @@ bool BTree<T>::_BInsert(BNode<T>* &bt, T x)
     {
         if (bt->rchild == NULL)
         {
-            bt->rchild = new BNode<T>(x, bt);
+            bt->rchild = new BNode<T>;
+            bt->rchild->data = x;
+            bt->rchild->color = red;
+            bt->rchild->parent = bt;
+            /* 处理函数 */
+            _Handler(bt->rchild);
             return true;
         }
         else
@@ -214,7 +246,99 @@ bool BTree<T>::_BInsert(BNode<T>* &bt, T x)
     }
 }
 /*
-** 二叉树插入 {数组}
+** 红黑树插入 节点处理函数
+*/
+template <class T>
+void BTree<T>::_Handler(BNode<T>* bt)
+{
+    // case 0 直接返回
+    if (bt == NULL)
+    {
+        return;
+    }
+    // case 1 bt 是根节点
+    if (bt == _root)
+    {
+        // cout << "R";
+        bt->color = black;
+        return;
+    }
+    // case 2 父节点是 黑
+    if (bt->parent->color == black)
+    {
+        // cout << 2;
+        return;
+    }
+    // case 3 父节点是 红色，叔节点是 红色
+    if (bt->parent->color == red && _AuncleColor(bt) == red)
+    {
+        bt->parent->color = black;
+        _Auncle(bt)->color = black;
+        _Grandp(bt)->color = red;
+        _Handler(_Grandp(bt));
+    }
+}
+/*
+** 获得叔节点颜色
+*/
+template <class T>
+Color BTree<T>::_AuncleColor(BNode<T>* bt)
+{
+    BNode<T>* temp = _Auncle(bt);
+    return (temp != NULL) ? temp->color : black;
+}
+/*
+** 获得叔节点引用
+*/
+template <class T>
+BNode<T>* BTree<T>::_Auncle(BNode<T>* bt)
+{
+    if (bt == NULL || bt->parent == bt || bt->parent == NULL || bt->parent->parent == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        if (bt->parent == bt->parent->parent->lchild)
+        {
+            return bt->parent->parent->rchild ? (bt->parent->parent->rchild) : NULL;
+        }
+        else if(bt->parent == bt->parent->parent->rchild)
+        {
+            return bt->parent->parent->lchild ? (bt->parent->parent->lchild) : NULL;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+}
+/*
+** 获得祖父节点颜色
+*/
+template <class T>
+Color BTree<T>::_GrandpColor(BNode<T>* bt)
+{
+    BNode<T>* temp = _Grandp(bt);
+    return (temp != NULL) ? temp->color : black;
+}
+/*
+** 获得祖父节点引用
+*/
+template <class T>
+BNode<T>* BTree<T>::_Grandp(BNode<T>* bt)
+{
+    if (bt == NULL || bt->parent == bt || bt->parent == NULL || bt->parent->parent == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        return (bt->parent->parent);
+    }
+}
+/*
+** 红黑树插入 {数组}
 */
 template <class T>
 bool BTree<T>::BInsert(initializer_list<T> il)
@@ -229,7 +353,7 @@ bool BTree<T>::BInsert(initializer_list<T> il)
     return true;
 }
 /*
-** 二叉树删除
+** 红黑树删除
 */
 template <class T>
 bool BTree<T>::_BDelete(BNode<T>* bt, T x)
@@ -279,7 +403,7 @@ bool BTree<T>::_BDelete(BNode<T>* bt, T x)
     }
 }
 /*
-** 查找root下最小值
+** 查找 bt 下最小值
 */
 template <class T>
 T BTree<T>::_getmin(BNode<T>* bt)
@@ -313,12 +437,18 @@ void output(BTree<T>& gyh2)
 
 int main() {
     BTree<int> gyh;
-    gyh.BInsert({10,8,5,3,9,15,11,20}) ? cout << "ok" << endl : cout << "no" << endl;
-    gyh.BFind(10) ? cout << "Find OK" << endl : cout << "Find NO" << endl;
-// test delete
-    gyh.BDelete(10) ? cout << "Delete OK" << endl : cout << "Delete NO" << endl;
+    gyh.BInsert(50);
+    // gyh.LevelOrder();
+    gyh.BInsert(40);
+    gyh.BInsert(70);
+    gyh.BInsert(60);
+//     gyh.BInsert({10,8,5,3,9,15,11,20}) ? cout << "ok" << endl : cout << "no" << endl;
+//     gyh.BFind(10) ? cout << "Find OK" << endl : cout << "Find NO" << endl;
+// // test delete
+//     gyh.BDelete(10) ? cout << "Delete OK" << endl : cout << "Delete NO" << endl;
     
-    output<int>(gyh);
+    // output<int>(gyh);
+    gyh.LevelOrder();
     return 0;
 }
 /*
