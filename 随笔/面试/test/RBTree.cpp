@@ -1,5 +1,6 @@
 #include <vector>
 #include <queue>
+#include <cstdlib>
 #include <iostream>
 using namespace std;
 
@@ -27,7 +28,7 @@ public:
 
     // void Create() { _root = _Create(_root, NULL); }
     void PreOrder() { _PreOrder(_root); }    //前序遍历
-    void InOrder() { cout << "zhong" << endl;_InOrder(_root); }      //中序遍历
+    void InOrder() { _InOrder(_root); }      //中序遍历
     void PostOrder() { _PostOrder(_root); }  //后序遍历
     void LevelOrder() { _LevelOrder(_root); }  //层次遍历
 
@@ -120,14 +121,9 @@ void BTree<T>::_PreOrder(BNode<T>* bt)
 template <class T>
 void BTree<T>::_InOrder(BNode<T>* bt)
 {
-    if(bt == NULL)
-    {
-        // cout << "NULL" << endl;
-        return;
-    }
+    if(bt == NULL) return;
     else
     {
-        // cout << "data" << endl;
         _InOrder(bt->lchild);
         cout << bt->data << (bt->color == red ? "[R]" : "[B]") <<" ";
         _InOrder(bt->rchild);
@@ -140,7 +136,8 @@ template <class T>
 void BTree<T>::_PostOrder(BNode<T>* bt)
 {
     if(bt == NULL) return;
-    else{
+    else
+    {
         _PostOrder(bt->lchild);
         _PostOrder(bt->rchild);
         cout << bt->data << (bt->color == red ? "[R]" : "[B]") << " ";
@@ -319,10 +316,7 @@ void BTree<T>::_Handler(BNode<T>* bt)
     }
 }
 /*
-** 左旋
-    [30]              40
-  25    40        [30]    50        
-      35  50    25    35               
+** 左旋             
 */
 template <class T>
 void BTree<T>::_LeftTurn(BNode<T>* bt)
@@ -348,18 +342,34 @@ void BTree<T>::_LeftTurn(BNode<T>* bt)
         else
             return;
     }
-    // cout << _root->data << _root->lchild->data << _root->rchild->data;
 }
 /*
-** 右旋
-    [30]              40
-  25    40        [30]    50        
-      35  50    25    35               
+** 右旋            
 */
 template <class T>
 void BTree<T>::_RightTurn(BNode<T>* bt)
 {
-
+    if (bt == NULL) return;
+    if (bt == _root) _root = bt->lchild;
+    BNode<T>* btp = bt->parent;
+    BNode<T>* btl = bt->lchild;
+    BNode<T>* btlr = bt->lchild->rchild;
+    bt->color = red;
+    btl->color = black;
+    bt->lchild = btlr;
+    bt->parent = btl;
+    btl->rchild = bt;
+    btl->parent = btp;
+    if (btlr != NULL) btlr->parent = bt;
+    if (btp != NULL)
+    {
+        if (btp->lchild == bt)
+            btp->lchild = btl;
+        else if (btp->rchild == bt)
+            btp->rchild = btl;
+        else
+            return;
+    }
 }
 /*
 ** 获得叔节点颜色
@@ -486,7 +496,7 @@ bool BTree<T>::_BDelete(BNode<T>* bt, T x)
     }
 }
 /*
-** 查找 bt 下最小值
+** 查找 bt下最小值
 */
 template <class T>
 T BTree<T>::_getmin(BNode<T>* bt)
@@ -508,41 +518,33 @@ T BTree<T>::_getmin(BNode<T>* bt)
 template <class T>
 void output(BTree<T>& gyh2)
 {
-    cout << "-------------------" << endl;
+    cout << "- - - - - - - - - - - - - - - - - - -" << endl;
     gyh2.PreOrder();
     cout << endl;
-    cout << "-------------------" << endl;
+    cout << "- - - - - - - - - - - - - - - - - - -" << endl;
     gyh2.InOrder();
     cout << endl;
-    cout << "-------------------" << endl;
+    cout << "- - - - - - - - - - - - - - - - - - -" << endl;
     gyh2.LevelOrder();
+    cout << "- - - - - - - - - - - - - - - - - - -" << endl;
 }
 
 int main() {
     BTree<int> gyh;
-    gyh.BInsert(50);
-    // gyh.LevelOrder();
+    for (int i = 0; i < 10; ++i)
+    {
+        int t = rand()%100;
+        cout << "insert : " << t;
+        if (gyh.BInsert(t))
+            cout << " ...... ok" << endl;
+        else
+            cout << " ...... no" << endl;
+    }
+    // gyh.BInsert(50);
     // gyh.BInsert(40);
-    gyh.BInsert(60);
-    gyh.BInsert(70);
-    gyh.BInsert(80);
-    gyh.BInsert(90);
-//     gyh.BInsert({10,8,5,3,9,15,11,20}) ? cout << "ok" << endl : cout << "no" << endl;
-//     gyh.BFind(10) ? cout << "Find OK" << endl : cout << "Find NO" << endl;
-// // test delete
-//     gyh.BDelete(10) ? cout << "Delete OK" << endl : cout << "Delete NO" << endl;
-    
-    // output<int>(gyh);
-    gyh.LevelOrder();
-    // gyh.InOrder();
+    // gyh.BInsert(30);
+    // gyh.BInsert(20);
+    // gyh.BInsert(10);
+    output<int>(gyh);
     return 0;
 }
-/*
-          10
-        /    \
-       8     15 
-     /  \   /  \
-    5   9  11   20
-  /
-3    
-*/
