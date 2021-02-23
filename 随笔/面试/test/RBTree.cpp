@@ -446,6 +446,56 @@ bool BTree<T>::BInsert(initializer_list<T> il)
     return true;
 }
 /*
+** 二叉树删除
+*/
+// template <class T>
+// bool BTree<T>::_BDelete(BNode<T>* bt, T x)
+// {
+//     if (bt == NULL) return false;
+//     if (x < bt->data)
+//     {
+//         return _BDelete(bt->lchild, x);
+//     }
+//     else if (x > bt->data)
+//     {
+//         return _BDelete(bt->rchild, x);
+//     }
+//     else
+//     {
+//         if (bt->lchild == NULL && bt->rchild == NULL)
+//         {
+//             if (bt == bt->parent->lchild)
+//                 bt->parent->lchild = NULL;
+//             if (bt == bt->parent->rchild)
+//                 bt->parent->rchild = NULL;
+//             delete bt;
+//         }
+//         else if (bt->lchild == NULL && bt->rchild != NULL)
+//         {
+//             if (bt == bt->parent->lchild)
+//                 bt->parent->lchild = bt->rchild;
+//             if (bt == bt->parent->rchild)
+//                 bt->parent->rchild = bt->rchild;
+//             delete bt;
+//         }
+//         else if (bt->lchild != NULL && bt->rchild == NULL)
+//         {
+//             if (bt == bt->parent->lchild)
+//                 bt->parent->lchild = bt->lchild;
+//             if (bt == bt->parent->rchild)
+//                 bt->parent->rchild = bt->lchild;
+//             delete bt;
+//         }
+//         else
+//         {
+//             T min_in_rchild = _getmin(bt->rchild);
+//             bt->data = min_in_rchild;
+//             _BDelete(bt->rchild, min_in_rchild);
+//         }
+//         return true;
+//     }
+// }
+/*
 ** 红黑树删除
 */
 template <class T>
