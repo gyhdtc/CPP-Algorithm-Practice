@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-int huafenzhongjian(vector<int>& a, int start, int end)
+int middle(vector<int>& a, int start, int end)
 {
     int i = start;
     int j = end;
@@ -21,7 +21,7 @@ int huafenzhongjian(vector<int>& a, int start, int end)
 void quicksort(vector<int>& a, int start, int end)
 {
     if (start == end) return;
-    int i = huafenzhongjian(a, start, end);
+    int i = middle(a, start, end);
     if (start <= end)
     {
         quicksort(a, start, i);
@@ -31,7 +31,7 @@ void quicksort(vector<int>& a, int start, int end)
 int main()
 {
     // 递增
-    vector<int> a {3,9,6,7,2,1,5,8,4,0};
+    vector<int> a {15, 33, 84, 44, 15, 1, 9, 23, 101};
     quicksort(a, 0, a.size()-1);
     for (int i = 0; i < a.size(); ++i)
     {
