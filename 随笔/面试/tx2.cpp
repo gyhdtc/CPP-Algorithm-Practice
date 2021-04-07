@@ -2,12 +2,7 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
- 
-int comp(const void *a, const void *b)
-{
-    return *((int *)b) - *((int *)a);
-}
- 
+
 int main()
 {
     int T;
@@ -19,8 +14,7 @@ int main()
         int i;
         vector<int> seconds(n);
         for (i = 0; i < n; ++i) cin >> seconds[i];
-        sort(seconds.begin(), seconds.end());
-        reverse(seconds.begin(), seconds.end());
+        sort(seconds.begin(), seconds.end(), [](int a, int b){return a > b;});
         ans = 0;
         i = 0;
         min = seconds[n - 1];
